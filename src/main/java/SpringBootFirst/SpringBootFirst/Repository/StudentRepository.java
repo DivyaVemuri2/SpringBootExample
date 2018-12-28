@@ -8,5 +8,6 @@ import org.springframework.data.repository.Repository;
 import java.util.List;
 
 public interface StudentRepository extends CrudRepository<Student,String> {
-//    Student findByFirstnameAndLastName(String fristname, String lastname);
+    Student findByLastname(String lastname);
+    //Student findByFirstnameAndLastName(String fristname, String lastname);
 }

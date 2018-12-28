@@ -4,24 +4,32 @@ package SpringBootFirst.SpringBootFirst.Controller;
 import SpringBootFirst.SpringBootFirst.Model.PhoneNumbers;
 import SpringBootFirst.SpringBootFirst.Model.Student;
 import SpringBootFirst.SpringBootFirst.Service.StudentService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/student")
 public class StudentController {
+
+    private final Logger LOGGER= LoggerFactory.getLogger(StudentController.class);
 
     @Autowired
     private StudentService studentService;
 
-    @RequestMapping("/hi/{name}")
-    private String hrr(@PathVariable String name){
-        return "hello "+name;
+    @RequestMapping("/hi")
+    private String hrr(){
+        LOGGER.info("**-INFO-**   Testing the log funtion");
+        return "hello ";
     }
 
-    @RequestMapping("/AllStudents")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @RequestMapping("/getAllStudents")
     public List<Student> getAllStudents(){
         return studentService.getAllStudents();
     }
@@ -50,4 +58,10 @@ public class StudentController {
     public void addNumber(@RequestBody PhoneNumbers phoneNumbers) {
         studentService.addNumber(phoneNumbers);
     }
+
+    @RequestMapping("/findbylastname/{lastname}")
+    public Student findbylastname(@PathVariable("lastname")String lasstname){
+            return studentService.getBylastName(lasstname);
+    }
+
 }
